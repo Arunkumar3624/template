@@ -15,6 +15,11 @@ A small full-stack app where users can register, log in, browse templates, and s
 - Frontend: https://fullstackintern.onrender.com
 - Backend API: https://backend-rezc.onrender.com/api
 
+> Note: the backend runs on Render's free tier, which sleeps after 15 minutes of
+> inactivity. The first request after that can take up to ~60 seconds while it
+> wakes up — the app shows a "waking up" message during this instead of looking
+> stuck. Browsing again right after is instant.
+
 ## Setup Instructions
 
 ### 1. Backend (`server/`)

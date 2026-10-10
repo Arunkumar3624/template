@@ -4,6 +4,7 @@ import api from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import TemplateCard from '../components/TemplateCard';
 import Reveal from '../components/Reveal';
+import useSlowLoadWarning from '../hooks/useSlowLoadWarning';
 
 export default function Templates() {
   const { isAuthenticated } = useAuth();
@@ -17,6 +18,7 @@ export default function Templates() {
   const [favoriteIds, setFavoriteIds] = useState(new Set());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const showSlowLoadWarning = useSlowLoadWarning(loading);
 
   useEffect(() => {
     api.get('/templates/meta/categories').then(({ data }) => setCategories(data.categories));
@@ -145,7 +147,15 @@ export default function Templates() {
 
       <div className="mt-8">
         {loading ? (
-          <p className="text-smoke-500 text-sm">Loading templates...</p>
+          <div className="text-sm text-smoke-500 space-y-1">
+            <p>Loading templates...</p>
+            {showSlowLoadWarning && (
+              <p className="text-smoke-400">
+                First load can take up to a minute — the backend is hosted on a free
+                tier that sleeps after inactivity and is just waking up.
+              </p>
+            )}
+          </div>
         ) : visibleTemplates.length === 0 ? (
           <p className="text-smoke-500 text-sm">No templates match your filters.</p>
         ) : (

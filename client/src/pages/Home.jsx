@@ -4,6 +4,7 @@ import api from '../api/axios';
 import TemplateCard from '../components/TemplateCard';
 import Reveal from '../components/Reveal';
 import { useAuth } from '../context/AuthContext';
+import useSlowLoadWarning from '../hooks/useSlowLoadWarning';
 
 const HERO_IMAGE_PRIMARY =
   'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=80';
@@ -16,7 +17,9 @@ export default function Home() {
   const [heroLoaded, setHeroLoaded] = useState(false);
   const [categories, setCategories] = useState([]);
   const [featured, setFeatured] = useState([]);
+  const [featuredLoading, setFeaturedLoading] = useState(true);
   const [favoriteIds, setFavoriteIds] = useState(new Set());
+  const showSlowLoadWarning = useSlowLoadWarning(featuredLoading);
 
   useEffect(() => {
     setHeroLoaded(true);
@@ -24,7 +27,10 @@ export default function Home() {
 
   useEffect(() => {
     api.get('/templates/meta/categories').then(({ data }) => setCategories(data.categories));
-    api.get('/templates').then(({ data }) => setFeatured(data.templates.slice(0, 4)));
+    api
+      .get('/templates')
+      .then(({ data }) => setFeatured(data.templates.slice(0, 4)))
+      .finally(() => setFeaturedLoading(false));
   }, []);
 
   useEffect(() => {
@@ -147,31 +153,45 @@ export default function Home() {
         </section>
       )}
 
-      {featured.length > 0 && (
+      {(featuredLoading || featured.length > 0) && (
         <section className="px-6 lg:px-10 pb-20">
           <Reveal>
             <div className="flex items-end justify-between mb-6">
               <h2 className="text-xl font-semibold text-smoke-900 tracking-tight">
                 A few to start with
               </h2>
-              <Link to="/templates" className="text-sm font-medium text-accent hover:underline">
-                See all templates
-              </Link>
+              {featured.length > 0 && (
+                <Link to="/templates" className="text-sm font-medium text-accent hover:underline">
+                  See all templates
+                </Link>
+              )}
             </div>
           </Reveal>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {featured.map((template, index) => (
-              <Reveal key={template._id} delay={index * 80}>
-                <TemplateCard
-                  template={template}
-                  isFavorited={favoriteIds.has(template._id)}
-                  onToggleFavorite={handleToggleFavorite}
-                  authRequired={!isAuthenticated}
-                />
-              </Reveal>
-            ))}
-          </div>
+          {featuredLoading ? (
+            <div className="text-sm text-smoke-500 space-y-1">
+              <p>Loading templates...</p>
+              {showSlowLoadWarning && (
+                <p className="text-smoke-400">
+                  First load can take up to a minute — the backend is hosted on a free
+                  tier that sleeps after inactivity and is just waking up.
+                </p>
+              )}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {featured.map((template, index) => (
+                <Reveal key={template._id} delay={index * 80}>
+                  <TemplateCard
+                    template={template}
+                    isFavorited={favoriteIds.has(template._id)}
+                    onToggleFavorite={handleToggleFavorite}
+                    authRequired={!isAuthenticated}
+                  />
+                </Reveal>
+              ))}
+            </div>
+          )}
         </section>
       )}
     </div>
