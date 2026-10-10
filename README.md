@@ -12,8 +12,8 @@ A small full-stack app where users can register, log in, browse templates, and s
 
 ## Live Demo
 
-- Frontend: _add your Render frontend URL here_
-- Backend API: _add your Render backend URL here_
+- Frontend: https://fullstackintern.onrender.com
+- Backend API: https://backend-rezc.onrender.com/api
 
 ## Setup Instructions
 
