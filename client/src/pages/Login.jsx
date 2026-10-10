@@ -23,7 +23,8 @@ export default function Login() {
       await login(form);
       navigate('/templates');
     } catch (err) {
-      setError(err.response?.data?.message || 'Login failed. Please try again.');
+      const fieldError = err.response?.data?.errors?.[0]?.message;
+      setError(fieldError || err.response?.data?.message || 'Login failed. Please try again.');
     } finally {
       setLoading(false);
     }

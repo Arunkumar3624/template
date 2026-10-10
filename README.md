@@ -10,7 +10,10 @@ A small full-stack app where users can register, log in, browse templates, and s
 - **ORM:** Mongoose
 - **Auth:** JWT + bcrypt password hashing
 
-See [PROJECT.md](./PROJECT.md) for architecture decisions, security measures, and the reasoning behind a few choices that differ from what was initially suggested.
+## Live Demo
+
+- Frontend: _add your Render frontend URL here_
+- Backend API: _add your Render backend URL here_
 
 ## Setup Instructions
 
@@ -27,7 +30,7 @@ Fill in `.env`:
 - `JWT_SECRET` — any long random string
 
 ```bash
-npm run seed   # seeds 6 sample templates
+npm run seed   # seeds 23 sample templates across 7 categories
 npm run dev    # starts the API on http://localhost:5000
 ```
 
@@ -49,5 +52,5 @@ npm run dev             # starts the app on http://localhost:5173
 
 ## Author
 
-Arunkuamr P
+Arunkumar P
 arunkumar.palaniselvam.s@gmail.com

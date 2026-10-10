@@ -69,17 +69,15 @@ export default function Home() {
               heroLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
             }`}
           >
-            <span className="inline-block text-xs font-semibold tracking-wide uppercase text-accent bg-accent/10 px-3 py-1 rounded-full">
-              23 templates, 7 categories
-            </span>
-            <h1 className="mt-4 text-4xl sm:text-5xl font-semibold tracking-tight text-smoke-900 leading-tight">
+            <h1 className="text-4xl sm:text-5xl font-semibold tracking-tight text-smoke-900 leading-tight">
               Find a template,Save it.
               <br />
               Build on it.
             </h1>
             <p className="mt-4 text-base text-smoke-600 max-w-md">
-              A small collection of landing pages, dashboards, admin panels, portfolios and more. Browse at your own pace, favorite what fits, and pick it back up whenever
-              you're ready to start building.
+              A collection built to spark your next idea — landing pages, dashboards,
+              portfolios and more. Explore freely, save what speaks to you, and come
+              back whenever inspiration strikes.
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -123,19 +121,27 @@ export default function Home() {
       {categories.length > 0 && (
         <section className="px-6 lg:px-10 pb-16">
           <Reveal>
-            <p className="text-xs font-semibold tracking-wide uppercase text-smoke-500 mb-4">
-              Browse by category
+            <p className="text-lg font-semibold text-smoke-900 mb-4">
+              We have a variety of templates
             </p>
-            <div className="flex flex-wrap gap-3">
-              {categories.map((category) => (
-                <Link
-                  key={category}
-                  to={`/templates?category=${encodeURIComponent(category)}`}
-                  className="px-4 py-2 rounded-full border border-smoke-300 bg-white text-sm font-medium text-smoke-600 hover:border-accent hover:text-accent transition-colors"
-                >
-                  {category}
-                </Link>
-              ))}
+            <div className="overflow-hidden -mx-6 px-6 lg:-mx-10 lg:px-10">
+              <div
+                className="marquee-track flex gap-3 w-max"
+                style={{ animationDuration: `${categories.length * 16}s` }}
+              >
+                {Array(8)
+                  .fill(categories)
+                  .flat()
+                  .map((category, index) => (
+                    <Link
+                      key={`${category}-${index}`}
+                      to={`/templates?category=${encodeURIComponent(category)}`}
+                      className="shrink-0 px-4 py-2 rounded-full border border-smoke-300 bg-white text-sm font-medium text-smoke-600 hover:border-accent hover:text-accent transition-colors"
+                    >
+                      {category}
+                    </Link>
+                  ))}
+              </div>
             </div>
           </Reveal>
         </section>

@@ -23,7 +23,8 @@ export default function Register() {
       await register(form);
       navigate('/templates');
     } catch (err) {
-      setError(err.response?.data?.message || 'Registration failed. Please try again.');
+      const fieldError = err.response?.data?.errors?.[0]?.message;
+      setError(fieldError || err.response?.data?.message || 'Registration failed. Please try again.');
     } finally {
       setLoading(false);
     }
