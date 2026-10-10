@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.env
+.DS_Store
+
+# raw staging folder for sourced template screenshots - processed copies
+# live in public/templates/, which IS committed
+assets/
